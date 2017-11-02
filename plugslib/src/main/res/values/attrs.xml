@@ -3,6 +3,8 @@
 
     <declare-styleable name="SettingItemView">
         <attr name="imgleft_drawable" format="reference|integer" />
+        <attr name="imgleft_width" format="dimension" />
+        <attr name="imgleft_height" format="dimension" />
         <attr name="title_text" format="string" />
     </declare-styleable>
 
