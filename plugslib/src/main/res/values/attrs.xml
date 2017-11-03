@@ -5,7 +5,14 @@
         <attr name="imgleft_drawable" format="reference|integer" />
         <attr name="imgleft_width" format="dimension" />
         <attr name="imgleft_height" format="dimension" />
+        <attr name="border_height" format="dimension" />
         <attr name="title_text" format="string" />
+        <attr name="title_text_marginleft" format="dimension" />
+        <attr name="left_text" format="string" />
+        <attr name="is_show_border" format="boolean" />
+        <attr name="is_show_border_top" format="boolean" />
+        <attr name="is_show_border_bottom" format="boolean" />
+        <attr name="imgarrows_drawable" format="reference|integer" />
     </declare-styleable>
 
 </resources>

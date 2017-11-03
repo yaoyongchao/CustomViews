@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.yyc.customviews.search.MyItemActivity;
 import com.yyc.customviews.search.SearchActivity;
 
 import butterknife.ButterKnife;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 doNext(SearchActivity.class);
                 break;
             case R.id.btn_dialog:
+                doNext(MyItemActivity.class);
                 break;
         }
     }
