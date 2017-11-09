@@ -23,6 +23,7 @@ import com.yyc.plugslib.R;
 /**
  * Created by yaoyongchao on 17-11-1.
  * Dscription: http://www.cnblogs.com/whoislcj/p/5714760.html
+ * 回家继续搞。
  */
 
 public class SettingItemView extends ConstraintLayout {
