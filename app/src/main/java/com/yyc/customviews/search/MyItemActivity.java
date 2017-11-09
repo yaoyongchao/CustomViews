@@ -26,7 +26,7 @@ public class MyItemActivity extends AppCompatActivity {
 
     private void initView() {
         setView.setTitleText("公司名称");
-        setView.setValueText("北京分公司！");
+//        setView.setValueText("北京分公司！");
     }
 
     @OnClick(R.id.set_view)

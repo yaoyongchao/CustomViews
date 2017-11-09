@@ -12,6 +12,7 @@ import android.widget.SearchView;
 
 import com.yyc.customviews.R;
 import com.yyc.customviews.badgeview.BadgeView;
+import com.yyc.plugslib.itemView.SettingItemView;
 
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+import butterknife.OnClick;
 
 
 public class SearchActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class SearchActivity extends AppCompatActivity {
 
     @BindView(R.id.img)
     ImageView img;
+    @BindView(R.id.st)
+    SettingItemView st;
 
     private BadgeView badgeView;
     private BadgeView badgeView1;
@@ -56,13 +59,13 @@ public class SearchActivity extends AppCompatActivity {
         badgeView1 = new BadgeView(this);
         badgeView1.setTargetView(img);
         badgeView1.setBadgeText("9");
-        Log.e(TAG,"is number:" + isNumeric("901"));
+        Log.e(TAG, "is number:" + isNumeric("901"));
     }
 
-    public boolean isNumeric(String str){
+    public boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
+        if (!isNum.matches()) {
             return false;
         }
         return true;
@@ -70,11 +73,11 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setSearch() {
         View v = searchView.getChildAt(0);
-        Log.e(TAG,"v---" + v);
+        Log.e(TAG, "v---" + v);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG,"你摸到我了");
+                Log.e(TAG, "你摸到我了");
             }
         });
 
@@ -99,5 +102,10 @@ public class SearchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @OnClick(R.id.st)
+    public void onViewClicked() {
+        Log.e("aa","我是好人！");
     }
 }

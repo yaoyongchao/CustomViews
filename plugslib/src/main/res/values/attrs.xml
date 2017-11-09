@@ -8,11 +8,17 @@
         <attr name="border_height" format="dimension" />
         <attr name="title_text" format="string" />
         <attr name="title_text_marginleft" format="dimension" />
+        <attr name="title_textSize" format="dimension" />
         <attr name="left_text" format="string" />
         <attr name="is_show_border" format="boolean" />
         <attr name="is_show_border_top" format="boolean" />
         <attr name="is_show_border_bottom" format="boolean" />
-        <attr name="imgarrows_drawable" format="reference|integer" />
+        <attr name="chk_drawable" format="reference|integer" />
+        <attr name="chk_text" format="string" />
+        <attr name="chk_textSize" format="dimension" />
+        <attr name="checkable" format="boolean" />
+        <attr name="is_show_check" format="boolean" />
+        <attr name="is_show_checkbtn" format="boolean" />
     </declare-styleable>
 
 </resources>

@@ -61,16 +61,61 @@
         />
 
     <com.yyc.plugslib.itemView.SettingItemView
+        android:id="@+id/st"
         android:layout_width="0dp"
         android:layout_height="80dp"
         siv:imgleft_drawable="@drawable/yi"
-        siv:title_text="我是好人啊！"
+        siv:title_text="我是"
+        siv:chk_text="请选择"
         siv:imgleft_width="78dp"
         siv:imgleft_height="78dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img"
+        siv:checkable="true"
+        siv:chk_drawable="@drawable/chk_selector"
+        siv:title_textSize="@dimen/item_title_size"
         >
 
     </com.yyc.plugslib.itemView.SettingItemView>
+
+    <ToggleButton
+        android:id="@+id/togglebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="喜欢"
+        android:textOff="不喜欢"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/st"
+        />
+
+    <Switch
+        android:id="@+id/witch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/togglebutton"
+        android:layout_alignLeft="@id/togglebutton"
+        android:checked="true"
+        android:textOff="关闭"
+        android:textOn="打开"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/st"
+        />
+
+    <CheckBox
+        android:id="@+id/check"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/witch"
+        android:checked="true"
+        android:textOff="关闭"
+        android:textOn="打开"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/st"
+        android:textColor="#f00"
+        android:text="1212"
+        android:textSize="40sp"
+        />
 </android.support.constraint.ConstraintLayout>
