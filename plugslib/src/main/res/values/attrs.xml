@@ -19,6 +19,18 @@
         <attr name="checkable" format="boolean" />
         <attr name="is_show_check" format="boolean" />
         <attr name="is_show_checkbtn" format="boolean" />
+        <attr name="title_textColor" format="reference|integer" />
+        <attr name="chk_textColor" format="reference|integer" />
+        <attr name="chk_marginRight" format="dimension" />
+        <attr name="isChecked" format="boolean" />
+        <attr name="title_goneMarginLeft" format="dimension" />
     </declare-styleable>
+    <!--
+    <attr name="chk_margin" format="dimension" />
+        <attr name="chk_marginRight" format="dimension" />
+        <attr name="chk_marginLeft" format="dimension" />
+        <attr name="chk_marginTop" format="dimension" />
+        <attr name="chk_marginBottom" format="dimension" />
+    -->
 
 </resources>

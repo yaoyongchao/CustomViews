@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintSet;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -36,27 +35,24 @@ public class SettingItemView extends ConstraintLayout {
     private static final int TVLEFT_ID = 0x1004;
     private static final int CHK_ID = 0x1005;
     private static final String BORDER_COLOR = "#CCCCCC";
-//    private static final String BORDER_COLOR = "#FF0000";
-    private static  int sBorderHeight = 1;
+    //    private static final String BORDER_COLOR = "#FF0000";
+    private  int sBorderHeight = 1;
     private static final int  IMGLEFTMARGIN = 15;
     private static final int  TVTITLEMARGIN = 10;
     private static final int  TVLEFTMARGIN = 15;
     private ImageView imgLeft;
     private TextView tvTitle;
+    private float goneMarginLeft = 20;
     private float tvTitleSize = 16;
     private ConstraintSet set;
     private float imgWidthDefault;
     private float imgHeightDefault;
-    private int imgMarginLeft = 10;
-    private int imgMarginTop = 10;
-    private int imgMarginRignt = 10;
-    private int imgMarginBotton = 10;
 
     private TextView borderTop;
     private TextView borderBottom;
-//    private TextView tvValue;
+    //    private TextView tvValue;
     private boolean isShowBorder = true;
-    private boolean isShowBorderTop = true;
+    private boolean isShowBorderTop = false;
     private boolean isShowBorderBottom = true;
     private ImageView imgArrows ;
 
@@ -64,10 +60,17 @@ public class SettingItemView extends ConstraintLayout {
     private boolean checkable = false;
     private boolean isShowCheck = true;
     private boolean isShowCheckBtn = true;
+    private boolean isChecked = false;
     private int  chkBtnbg = R.drawable.ic_arrows_left;
     private String chkText = "";
-    private static final int  CHKMARGIN = 15;
+    private static final int CHKMARGIN = 5;
     private float chkTvSize = 16;
+    private float chkMargin = 15;
+    private float chkMarginRight = chkMargin;
+
+    private int titleTextColor = Color.parseColor("#000000");
+    private int chkTextColor = Color.parseColor("#808080");
+
 
 
     public SettingItemView(Context context) {
@@ -85,39 +88,10 @@ public class SettingItemView extends ConstraintLayout {
         initViews(context,attrs);
     }
 
-//    private void initViews(Context context, AttributeSet attrs) {
-//        LayoutInflater.from(context).inflate(R.layout.view_setting_item, this, true);
-//        imgLeft = (ImageView) findViewById(R.id.img);
-//        tvTitle = (TextView) findViewById(R.id.tv);
-//
-//        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.SettingItemView);
-//        if (attributes != null) {
-//            if (attributes != null) {
-//                Log.i(TAG, "赋值img");
-//                //处理imgLeft图片
-//                int imgLeftDrawable = attributes.getResourceId(R.styleable.SettingItemView_imgleft_drawable, R.drawable.ic_defalt);
-//                Log.i(TAG, "赋值img--" + imgLeftDrawable);
-//                imgLeft.setImageResource(imgLeftDrawable);
-//
-//                String strTitle = attributes.getString(R.styleable.SettingItemView_title_text);
-//                if (!TextUtils.isEmpty(strTitle)) {
-//                    Log.i(TAG, "赋值Title");
-//                    tvTitle.setText(strTitle);
-//                } else {
-//                    Log.i(TAG, "赋值Title为空");
-//                    tvTitle.setText("赋值Title为空");
-//                }
-//            }
-//
-//        }
-//
-//        attributes.recycle();
-//    }
-
     /**
      * 初始化
      */
-    private void initViews(Context context,AttributeSet attrs) {
+    private void initViews(Context context, AttributeSet attrs) {
         log("initViews");
         set = new ConstraintSet();
         set.clone(this);
@@ -127,7 +101,6 @@ public class SettingItemView extends ConstraintLayout {
             initBorder(set,context,attributes);
             initImgLeft(set,context,attributes);
             initTvTitle(set,context,attributes);
-//            initTvValue(set,context,attributes);
             initChk(set,context,attributes);
 
             attributes.recycle();
@@ -138,6 +111,10 @@ public class SettingItemView extends ConstraintLayout {
 
     private void initChk(ConstraintSet set, Context context, TypedArray attributes) {
         log("initImaArrows");
+        isShowCheck = attributes.getBoolean(R.styleable.SettingItemView_is_show_check, isChecked);
+        if (!isShowCheck)
+            return;
+
         checkBox = new CheckBox(context);
         checkBox.setId(CHK_ID);
         addView(checkBox);
@@ -147,49 +124,37 @@ public class SettingItemView extends ConstraintLayout {
         set.connect(checkBox.getId(),ConstraintSet.RIGHT,ConstraintSet.PARENT_ID,ConstraintSet.RIGHT);
         set.constrainHeight(checkBox.getId(), ConstraintSet.WRAP_CONTENT);
         set.constrainWidth(checkBox.getId(), ConstraintSet.WRAP_CONTENT);
-        set.setMargin(checkBox.getId(),ConstraintSet.END,dip2Px(CHKMARGIN));
+
+        //set margin
+        chkMarginRight = attributes.getDimension(R.styleable.SettingItemView_chk_marginRight, dip2Px(CHKMARGIN));
+        set.setMargin(checkBox.getId(),ConstraintSet.END, (int) chkMarginRight);
 
         checkable = attributes.getBoolean(R.styleable.SettingItemView_checkable, checkable);
 //        isShowCheckText = attributes.getBoolean(R.styleable.SettingItemView_is_show_checktext, isShowCheckText);
         isShowCheckBtn = attributes.getBoolean(R.styleable.SettingItemView_is_show_checkbtn, isShowCheckBtn);
-
+        isChecked = attributes.getBoolean(R.styleable.SettingItemView_isChecked, isChecked);
         chkBtnbg = attributes.getResourceId(R.styleable.SettingItemView_chk_drawable, chkBtnbg);
         chkText = attributes.getString(R.styleable.SettingItemView_chk_text);
-        chkTvSize = attributes.getDimension(R.styleable.SettingItemView_chk_textSize,chkTvSize);
-
+        chkTvSize = attributes.getDimension(R.styleable.SettingItemView_chk_textSize,dip2Px(chkTvSize));
+        chkTextColor = attributes.getResourceId(R.styleable.SettingItemView_chk_textColor, chkTextColor);
 
         //set CheckBox is Checkable
         checkBox.setClickable(checkable);
+        checkBox.setChecked(isChecked);
         //set checkBox buttonDrawable and Set CheckBox is show Drawable
-        checkBox.setButtonDrawable(isShowCheckBtn == true ? chkBtnbg : null);
+        if (isShowCheckBtn == true) {
+            checkBox.setButtonDrawable(chkBtnbg);
+            Log.d("isBtn" ,"--ture" );
+        } else {
+            checkBox.setButtonDrawable(null);
+            Log.d("isBtn" ,"--false" );
+        }
         //set checkBox text
+        checkBox.getPaint().setTextSize(chkTvSize);
+        checkBox.setTextColor(chkTextColor);
         checkBox.setText(chkText);
-        checkBox.setTextSize(chkTvSize);
-
 
         set.applyTo(this);
-    }
-
-    private void initTvValue(ConstraintSet set, Context context, TypedArray attributes) {
-        /*log("initTvValue");
-        tvValue = new TextView(context);
-        tvValue.setId(TVLEFT_ID);
-        addView(tvValue);
-        set.connect(tvValue.getId(),ConstraintSet.RIGHT,ConstraintSet.PARENT_ID,ConstraintSet.RIGHT);
-        set.connect(tvValue.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP);
-        set.connect(tvValue.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
-        set.constrainHeight(tvValue.getId(), ConstraintSet.WRAP_CONTENT);
-        set.constrainWidth(tvValue.getId(), ConstraintSet.WRAP_CONTENT);
-        set.setMargin(tvValue.getId(),ConstraintSet.END,dip2Px(TVLEFTMARGIN));
-
-        String str = attributes.getString(R.styleable.SettingItemView_left_text);
-        if (!TextUtils.isEmpty(str)) {
-            tvValue.setText(str);
-        } else {
-            Log.i(TAG, "赋值Title为空");
-        }
-
-        set.applyTo(this);*/
     }
 
     private void initBorder(ConstraintSet set, Context context, TypedArray attributes) {
@@ -218,6 +183,8 @@ public class SettingItemView extends ConstraintLayout {
         set.constrainWidth(borderBottom.getId(),ConstraintSet.MATCH_CONSTRAINT_SPREAD);
         set.constrainHeight(borderBottom.getId(),sBorderHeight);
 
+        Log.i(TAG,"sBorderHeight:" + sBorderHeight);
+
         isShowBorder = attributes.getBoolean(R.styleable.SettingItemView_is_show_border,isShowBorder);
         isShowBorderTop = attributes.getBoolean(R.styleable.SettingItemView_is_show_border_top,isShowBorderTop);
         isShowBorderBottom = attributes.getBoolean(R.styleable.SettingItemView_is_show_border_bottom,isShowBorderBottom);
@@ -225,24 +192,11 @@ public class SettingItemView extends ConstraintLayout {
         set.setVisibility(borderTop.getId(),((isShowBorder && isShowBorderTop) ? View.VISIBLE : View.GONE));
         set.setVisibility(borderBottom.getId(),((isShowBorder && isShowBorderBottom) ? View.VISIBLE : View.GONE));
 //
-//        if (isShowBorder) {
-//            Log.i(TAG,"isShowBorder--显示" );
-//            if (isShowBorderTop)
-//                set.setVisibility(borderTop.getId(),View.VISIBLE);
-//            if (isShowBorderBottom)
-//                set.setVisibility(borderTop.getId(),View.VISIBLE);
-//        } else {
-//            Log.i(TAG,"isShowBorder:--隐藏");
-//            set.setVisibility(borderTop.getId(),View.GONE);
-//            set.setVisibility(borderBottom.getId(),View.GONE);
-//        }
-
         set.applyTo(this);
     }
 
     private void initTvTitle(ConstraintSet set, Context context, TypedArray attributes) {
         log("initTVTitle");
-
         tvTitle = new TextView(context);
         tvTitle.setId(TVTITLE_ID);
         addView(tvTitle);
@@ -251,44 +205,52 @@ public class SettingItemView extends ConstraintLayout {
         set.connect(tvTitle.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
         set.constrainHeight(tvTitle.getId(), ConstraintSet.WRAP_CONTENT);
         set.constrainWidth(tvTitle.getId(), ConstraintSet.WRAP_CONTENT);
-        set.setMargin(tvTitle.getId(),ConstraintSet.START,dip2Px(TVTITLEMARGIN));
+//        set.setMargin(tvTitle.getId(),ConstraintSet.START,dip2Px(TVTITLEMARGIN));
         set.setMargin(tvTitle.getId(),ConstraintSet.START, (int) attributes.getDimension(R.styleable.SettingItemView_title_text_marginleft,dip2Px(TVTITLEMARGIN)));
+        set.setGoneMargin(tvTitle.getId(),ConstraintSet.START, (int) attributes.getDimension(R.styleable.SettingItemView_title_goneMarginLeft, dip2Px(goneMarginLeft)));
 
         String strTitle = attributes.getString(R.styleable.SettingItemView_title_text);
-        tvTitleSize = attributes.getDimension(R.styleable.SettingItemView_title_textSize,  tvTitleSize);
-        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP,tvTitleSize);
+        tvTitleSize = attributes.getDimension(R.styleable.SettingItemView_title_textSize,  dip2Px(tvTitleSize));
+        titleTextColor = attributes.getResourceId(R.styleable.SettingItemView_title_textColor, titleTextColor);
+//        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,tvTitleSize);
+        tvTitle.getPaint().setTextSize(tvTitleSize);
+        tvTitle.setTextColor(titleTextColor);
         if (!TextUtils.isEmpty(strTitle)) {
             tvTitle.setText(strTitle);
         } else {
             Log.i(TAG, "赋值Title为空");
         }
-
         set.applyTo(this);
     }
 
     private void initImgLeft(ConstraintSet set, Context context, TypedArray attributes) {
         log("initImgLeft");
+
         imgLeft = new ImageView(context);
         imgLeft.setId(IMGLEFT_ID);
         addView(imgLeft);
 
-        set.connect(imgLeft.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP);
-        set.connect(imgLeft.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
-        set.connect(imgLeft.getId(),ConstraintSet.LEFT,ConstraintSet.PARENT_ID,ConstraintSet.LEFT);
-        set.constrainHeight(imgLeft.getId(), ConstraintSet.WRAP_CONTENT);
-        set.constrainWidth(imgLeft.getId(), ConstraintSet.WRAP_CONTENT);
-        set.setMargin(imgLeft.getId(),ConstraintSet.START,dip2Px(IMGLEFTMARGIN));
-
         int imgLeftDrawable = attributes.getResourceId(R.styleable.SettingItemView_imgleft_drawable, -1);
-        if (imgLeftDrawable != -1)
-            imgLeft.setImageResource(imgLeftDrawable);
-        imgLeft.setBackgroundColor(Color.GREEN);
+        if (imgLeftDrawable == -1) {
+            imgLeft.setVisibility(View.GONE);
+        } else {
+            set.connect(imgLeft.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP);
+            set.connect(imgLeft.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
+            set.connect(imgLeft.getId(),ConstraintSet.LEFT,ConstraintSet.PARENT_ID,ConstraintSet.LEFT);
+            set.constrainHeight(imgLeft.getId(), ConstraintSet.WRAP_CONTENT);
+            set.constrainWidth(imgLeft.getId(), ConstraintSet.WRAP_CONTENT);
+            set.setMargin(imgLeft.getId(),ConstraintSet.START,dip2Px(IMGLEFTMARGIN));
 
-        imgHeightDefault = attributes.getDimension(R.styleable.SettingItemView_imgleft_height, 0);
-        imgWidthDefault = attributes.getDimension(R.styleable.SettingItemView_imgleft_width, 0);
-        set.constrainHeight(imgLeft.getId(), (int) imgHeightDefault);
-        set.constrainWidth(imgLeft.getId(), (int) imgWidthDefault);
+            imgLeft.setVisibility(View.VISIBLE);
+            imgLeft.setImageResource(imgLeftDrawable);
+//            imgLeft.setBackgroundColor(Color.GREEN);
+            imgHeightDefault = attributes.getDimension(R.styleable.SettingItemView_imgleft_height, 0);
+            imgWidthDefault = attributes.getDimension(R.styleable.SettingItemView_imgleft_width, 0);
+            set.constrainHeight(imgLeft.getId(), (int) imgHeightDefault);
+            set.constrainWidth(imgLeft.getId(), (int) imgWidthDefault);
+        }
         set.applyTo(this);
+
     }
 
     public void setTitleText(CharSequence text) {
@@ -353,6 +315,18 @@ public class SettingItemView extends ConstraintLayout {
     public TextView getTvTitle() {
         if (tvTitle != null)
             return  tvTitle;
+        return null;
+    }
+
+    public CharSequence getTvTitleText() {
+        if (tvTitle != null)
+            return  tvTitle.getText();
+        return null;
+    }
+
+    public CharSequence getRightText() {
+        if (checkBox != null)
+            return  checkBox.getText();
         return null;
     }
 
